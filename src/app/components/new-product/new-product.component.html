@@ -1,0 +1,137 @@
+<form
+	[formGroup]="productForm"
+	(ngSubmit)="productId ? updateProduct() : addNewProduct()"
+>
+	<div class="p-8">
+		<!-- Title -->
+		<div class="grid justify-content-between">
+			<p-floatLabel class="col-4">
+				<input
+					pInputText
+					id="title"
+					class="w-full h-3rem"
+					formControlName="title"
+				/>
+				<label for="title">Title</label>
+			</p-floatLabel>
+
+			<!-- Description -->
+			<p-floatLabel class="col-8">
+				<textarea
+					pInputTextarea
+					class="w-full h-3rem"
+					formControlName="description"
+					[autoResize]="true"
+				></textarea>
+				<label for="description">Description</label>
+			</p-floatLabel>
+		</div>
+
+		<div class="grid justify-content-between mt-2">
+			<!-- Dropdown -->
+			<p-floatLabel class="col-4">
+				<p-dropdown
+					formControlName="category"
+					[options]="suggestions"
+					optionLabel="name"
+					placeholder="Select a City"
+				/>
+				<label for="category">Category</label>
+			</p-floatLabel>
+
+			<!-- Price & Discount & Stock -->
+			<div class="grid col-8 m-0 justify-content-between">
+				<!-- Price -->
+				<p-floatLabel>
+					<p-inputNumber
+						formControlName="price"
+						inputId="currency-us"
+						mode="currency"
+						class="w-full h-3rem"
+						currency="USD"
+						locale="en-US"
+					/>
+					<label for="price">Price</label>
+				</p-floatLabel>
+
+				<!-- Discount -->
+				<p-floatLabel>
+					<p-inputNumber
+						formControlName="discountPercentage"
+						inputId="discountPercentage"
+						class="w-full h-3rem"
+						suffix="%"
+					/>
+					<label for="discountPercentage">Discount</label>
+				</p-floatLabel>
+
+				<!-- Stock -->
+				<p-floatLabel>
+					<p-inputNumber
+						formControlName="stock"
+						inputId="integeronly"
+						class="w-full h-3rem"
+						[useGrouping]="false"
+						suffix=" /100"
+					/>
+					<label for="stock">Stock</label>
+				</p-floatLabel>
+			</div>
+		</div>
+
+		<!-- Tags & SKU -->
+		<div class="grid justify-content-between mt-2">
+			<!-- Tags -->
+			<p-floatLabel class="col-6">
+				<p-autoComplete
+					formControlName="tags"
+					[suggestions]="filteredTags"
+					(completeMethod)="searchTags($event)"
+					[multiple]="true"
+				/>
+				<label for="tags">Tags</label>
+			</p-floatLabel>
+
+			<!-- SKU -->
+			<p-floatLabel class="col-6">
+				<input
+					type="text"
+					pInputText
+					formControlName="sku"
+					class="w-full h-3rem"
+				/>
+				<label for="sku">SKU</label>
+			</p-floatLabel>
+		</div>
+	</div>
+
+	<!-- Buttons -->
+	<div
+		class="footer flex justify-content-between align-items-center mt-3 border-1 p-2"
+	>
+		<!-- Delete Button -->
+		@if (productId) {
+		<p-button
+			label="Delete"
+			[text]="true"
+			severity="danger"
+			(onClick)="deleteProduct()"
+		/>
+		} @else {
+		<p-button
+			label="Delete"
+			[text]="true"
+			[disabled]="true"
+			severity="danger"
+		/>
+		}
+		<div>
+			<!-- Create/Update Button -->
+			<p-button
+				type="submit"
+				[label]="productId ? 'Update' : 'Create'"
+				severity="primary"
+			/>
+		</div>
+	</div>
+</form>

@@ -1,0 +1,22 @@
+@if (productService.isLoading) {
+    <div class="flex justify-content-center align-items-center">
+        <p-progressSpinner
+            styleClass="w-4rem h-20rem"
+            strokeWidth="4"
+            fill="var(--surface-ground)"
+            animationDuration=".5s"
+        />
+    </div>
+} @else {
+    <div class="flex flex-wrap justify-content-center align-items-center border-2 border-round-2xl p-4 w-4 h-full m-auto">
+        <div class="flex flex-wrap p-5 gap-5">
+            <div class="">
+                <i class="pi pi-times-circle text-7xl"></i>
+            </div>
+            <div class="flex flex-column">
+                <span class="text-3xl pb-2">No results</span>
+                {{ message }}
+            </div>
+        </div>
+    </div>
+}

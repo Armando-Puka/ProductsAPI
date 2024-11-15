@@ -1,0 +1,118 @@
+<app-filter
+    [preselectedFilterValues]="cols"
+    (filterChange)="onFilterChange($event)"
+></app-filter>
+
+@if (!noFilterResults || productService.isLoading) {
+<app-empty-state
+    [message]="
+        productService.noSearch
+            ? 'No results for selected filters'
+            : 'Search or filter to show results'
+    "
+></app-empty-state>
+} @else {
+<div class="container mt-5 mb-5">
+    <!-- New Product Button -->
+    <div class="flex justify-content-end align-items-end mb-4 mr-3">
+        <p-button
+            [raised]="true"
+            name="newProduct"
+            label="New Product"
+            (onClick)="navigateToAddProduct()"
+        />
+    </div>
+
+    <p-table [columns]="cols" [value]="(product$ | async) || []">
+        <ng-template pTemplate="header" let-columns>
+            <tr>
+                @for (col of columns; track $index) {
+                <th>
+                    {{ col.header }}
+                </th>
+                }
+            </tr>
+        </ng-template>
+
+        <ng-template
+            pTemplate="body"
+            let-product
+            let-rowData
+            let-columns="columns"
+        >
+            <tr class="hover" [routerLink]="['/product', product.id]">
+                @for (col of columns; track $index) {
+                    <td>
+                        @switch (col.field) {
+                            @case ('price') {
+                                {{ rowData[col.field] | currency }}
+                            }
+
+                            @case ('tags') {
+                                @for (item of product.tags; track $index)
+                                {
+                                    <p-chip styleClass="custom-chip">
+                                        {{ item }}
+                                    </p-chip>
+                                }
+                            }
+
+                            @case ('thumbnail') {
+                                <p-image [src]="product.thumbnail" alt="Image" width="50" />
+                            }
+
+                            @case ('images') 
+                                { @for (item of product.images; track
+                                $index) {
+                                    <p-image [src]="item" alt="Image" width="50" />
+                                }
+                            }
+
+                            @case ('meta') {
+                                {{ product.meta.createdAt | date : "dd/MM/yyyy" }}                    
+                            }
+
+                            @case ('rating') {
+                                <p-rating
+                                    [(ngModel)]="product.rating"
+                                    [readonly]="true"
+                                    [cancel]="false"
+                                />
+                            } 
+
+                            @case ('dimensions') {
+                                <span
+                                    ><strong>HEIGHT:</strong>
+                                    {{ product.dimensions.height }};</span
+                                >
+
+                                <br />
+
+                                <span
+                                    ><strong>WIDTH:</strong>
+                                    {{ product.dimensions.width }};</span
+                                >
+
+                                <br />
+
+                                <span
+                                    ><strong>DEPTH:</strong>
+                                    {{ product.dimensions.depth }};</span
+                                >
+                            }
+
+                            @case ('reviews') {
+                                {{ product.ratingAverage.toFixed(1) }}
+                            }
+
+                            @default {
+                                {{ rowData[col.field] }}
+                            }
+                        }
+                    </td>
+                }
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+}

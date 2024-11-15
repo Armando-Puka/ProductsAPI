@@ -1,0 +1,36 @@
+<div class="container ml-5 mt-5 mb-5">
+	<h3>Filters</h3>
+	<form [formGroup]="filterGroup" class="flex gap-3">
+		<p-inputNumber
+			mode="decimal"
+			inputId="stacked"
+			formControlName="skip"
+			[showButtons]="true"
+			[useGrouping]="false"
+			placeholder="Skip"
+		/>
+
+		<p-inputNumber
+			mode="decimal"
+			inputId="stacked"
+			formControlName="limit"
+			[showButtons]="true"
+			[useGrouping]="false"
+			placeholder="Limit"
+		/>
+
+		<p-multiSelect
+			[options]="filterKeys"
+			optionValue="prop"
+			formControlName="filter"
+			optionLabel="prop"
+			placeholder="Select Cities"
+		/>
+
+		<p-button
+			label="Filter"
+			[raised]="true"
+			(onClick)="onFilterProducts()"
+		/>
+	</form>
+</div>

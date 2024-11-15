@@ -1,0 +1,15 @@
+<header>
+    @if (router.url.includes('products/add')) {
+        <div class="border-1 p-2 pl-4 mb-4">
+            <p>New Product</p> 
+        </div>
+    } @else if (router.url.includes('product/' + productId)) {
+        <div class="border-1 p-2 pl-4 mb-4">
+            <p>{{ productId }}</p> 
+        </div>
+    } @else {
+        <div class="border-1 p-3 pl-5 mb-4">
+            <app-search></app-search>
+        </div>
+    }
+</header>
